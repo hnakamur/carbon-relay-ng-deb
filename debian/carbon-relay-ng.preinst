@@ -1,0 +1,42 @@
+#! /bin/sh
+# preinst script for carbon-relay-ng
+
+set -e
+
+addcarbonrelaynguser() {
+    # creating carbon-relay-ng group if he isn't already there
+    if ! getent group carbon-relay-ng >/dev/null; then
+        addgroup --system carbon-relay-ng >/dev/null
+    fi
+
+    # creating carbon-relay-ng user if he isn't already there
+    if ! getent passwd carbon-relay-ng >/dev/null; then
+        adduser \
+          --system \
+          --disabled-login \
+          --ingroup carbon-relay-ng \
+          --no-create-home \
+          --home /nonexistent \
+          --gecos "carbon-relay-ng user" \
+          --shell /bin/false \
+          carbon-relay-ng  >/dev/null
+    fi
+}
+
+case "$1" in
+    install|upgrade)
+        addcarbonrelaynguser
+        ;;
+
+    abort-upgrade)
+        ;;
+
+    *)
+        echo "preinst called with unknown argument \`$1'" >&2
+        exit 0
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

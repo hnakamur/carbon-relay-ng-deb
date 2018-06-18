@@ -1,4 +1,10 @@
 #!/usr/bin/make -f
 
+INSTALLDIR = $(CURDIR)/debian/nginx
+
 %:
 	dh $@ --buildsystem=golang --with=golang
+
+dh_override_install:
+	dh_install
+	install -m 644 examples/carbon-relay-ng-tmpfiles.conf $(INSTALLDIR)/debian/usr/lib/tmpfiles.d/carbon-relay-ng.conf

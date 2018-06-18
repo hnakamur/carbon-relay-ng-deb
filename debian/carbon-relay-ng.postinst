@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" != "configure" ]; then
+    exit 0
+fi
+
+# Set permisions on default data directory on installation
+if [ -z "$2" ]; then
+    chown carbon-relay-ng:carbon-relay-ng /var/run/carbon-relay-ng /var/spool/carbon-relay-ng
+fi
+
+if [ -f /var/run/carbon-relay-ng.pid/carbon-relay-ng.pid ] && kill -0 $(cat /var/run/carbon-relay-ng.pid/carbon-relay-ng.pid) >/dev/null; then
+    echo "############################################"
+    echo "# Please restart carbon-relay-ng manually. #"
+    echo "############################################"
+else
+    invoke-rc.d carbon-relay-ng start || true
+fi
+
+#DEBHELPER#
+
+exit 0

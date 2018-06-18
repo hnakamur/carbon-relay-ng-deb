@@ -1,0 +1,3 @@
+/etc/carbon-relay-ng
+/var/run/carbon-relay-ng
+/var/spool/carbon-relay-ng
